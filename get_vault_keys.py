@@ -3,10 +3,15 @@ from json import loads, dumps
 import requests
 from urllib3.exceptions import InsecureRequestWarning
 
+
+
+
 requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--config', type=str, default='./config.json')
 args = parser.parse_args()
+
+
 
 with open(args.config, 'r', encoding='utf-8') as f:
     config = loads(f.read())
@@ -58,24 +63,7 @@ def list_secrets(path):
     return secrets
 
 
-def common_ttk():
-   pass
 
-
-def mutate_data(data):
-    old = [key for key in data]
-    new = [key.replace(config["branch"], f'{NEW}/newbranch') for key in data ]
-    new_data = dict_key_changer(data, old, new)
-    return new_data
-
-
-def add_keys(data):
-    for i in data:
-        if 'database-servers' in i or 'elastic' in i or 'kafka' in i:
-        #session.post(url=f'{config["vault_url"]}/v1/{i.key}', data=dumps(i.value), verify=False)
-
-            for k in data[i]:
-                print(f'{k} {data[i][k]}')
 
 
 def dict_key_changer(data, old_key, new_key):
@@ -85,6 +73,7 @@ def dict_key_changer(data, old_key, new_key):
     for x in list_all_key:
         data.pop(x)
     return data
+
 
 
 data = loads(open('.\\data.json').read())
